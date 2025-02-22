@@ -1,1 +1,58 @@
 /* You can add global styles to this file, and also import other style files */
+
+.curves {
+    border-radius: 25px;
+}
+
+.shadow-hover {
+    transition: box-shadow 0.3s ease; /* Smooth transition for the shadow */
+  }
+  
+.shadow-hover:hover {
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3); /* Add shadow on hover */
+}
+
+.cdk-overlay-container {
+    z-index: 1000 !important;
+  }
+
+/* Snackbar Styles */
+.success-snackbar {
+  background-color: #4caf50 !important; /* Green */
+  color: #fff !important; /* White text */
+  font-size: 1.2rem; /* Slightly larger text */
+  padding: 16px; /* More padding for better height */
+  border-radius: 8px; /* Rounded corners */
+  width: 100%; /* Full width for visibility */
+  max-width: 400px; /* Limit the maximum width */
+  text-align: center; /* Center-align text */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+/* Error Snackbar */
+.error-snackbar {
+  background-color: #f44336 !important; /* Red */
+  color: #fff !important; /* White text */
+  font-size: 1.2rem; /* Slightly larger text */
+  padding: 16px; /* More padding for better height */
+  border-radius: 8px; /* Rounded corners */
+  width: 100%; /* Full width for visibility */
+  max-width: 400px; /* Limit the maximum width */
+  text-align: center; /* Center-align text */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+.success-toast {
+  background-color: #4caf50 !important; /* Green */
+  color: white !important; /* White text */
+  font-size: 1.2rem;
+  border-radius: 8px;
+}
+
+/* Error Toastr */
+.error-toast {
+  background-color: #f44336 !important; /* Red */
+  color: white !important;
+  font-size: 1.2rem;
+  border-radius: 8px;
+}

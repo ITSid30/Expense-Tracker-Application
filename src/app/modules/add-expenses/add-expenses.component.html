@@ -1,0 +1,53 @@
+<h2 mat-dialog-title>Add New Expense</h2>
+<mat-dialog-content>
+    <form [formGroup]="expenseForm"
+        class="d-flex flex-column gap-3">
+        <mat-form-field>
+            <input matInput 
+                placeholder="Id"
+                formControlName="id"
+                type="number">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput 
+                placeholder="Expense Description"
+                formControlName="expenseDescription">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput
+                formControlName="expenseAmount" 
+                type="number"
+                placeholder="Expense Amount">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Expense Type</mat-label>
+            <mat-select formControlName="expenseType"
+                placeholder="Expense Type">
+                <mat-option *ngFor="let type of expenseTypes"
+                    [value]="type">
+                    {{ type }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Expense Date</mat-label>
+            <input matInput
+                [matDatepicker]="picker"
+                formControlName="expenseDate"
+                placeholder="DD/MM/YYYY">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions class="d-flex justify-content-end">
+    <button mat-button class="btn btn-secondary me-3" (click)="onCancel()">Cancel</button>
+    <button mat-button 
+        class="btn btn-primary me-4" 
+        (click)="onSave()"
+        [disabled]="!expenseForm.valid">Save</button>
+</mat-dialog-actions>
