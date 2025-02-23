@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Expense } from '../models';
+import { Expense, Sort } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +38,12 @@ export class ExpenseService {
 
   public getRecentExpenses(): Observable<Expense[]> {
     return this.httpClient.get<Expense[]>(this.userUrl + '/recent');
+  }
+
+  public getSortedExpenses(sort: Sort): Observable<Expense[]> {
+    let params = new HttpParams()
+      .set('sortBy', sort.value).set('sortDirection', sort.type);
+
+    return this.httpClient.get<Expense[]>(this.userUrl + '/sorted', { params });
   }
 }

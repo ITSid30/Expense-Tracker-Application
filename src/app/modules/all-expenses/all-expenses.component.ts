@@ -11,14 +11,14 @@ export class AllExpensesComponent implements OnInit {
 
   public expenseList: Expense[] = [];
   public sortTypes: Sort[] = [
-    {name: 'Name ASC', value: 1, type: 1 },
-    {name: 'Name DESC', value: 1, type: 2 },
-    {name: 'Amount ASC', value: 2, type: 1 },
-    {name: 'Amount DESC', value: 2, type: 2 },
-    {name: 'Type ASC', value: 3, type: 1 },
-    {name: 'Type DESC', value: 3, type: 2 },
-    {name: 'Date ASC', value: 4, type: 1 },
-    {name: 'Date DESC', value: 4, type: 2 },
+    {name: 'Name ASC', value: 'description', type: 1 },
+    {name: 'Name DESC', value: 'description', type: 2 },
+    {name: 'Amount ASC', value: 'amount', type: 1 },
+    {name: 'Amount DESC', value: 'amount', type: 2 },
+    {name: 'Type ASC', value: 'type', type: 1 },
+    {name: 'Type DESC', value: 'type', type: 2 },
+    {name: 'Date ASC', value: 'date', type: 1 },
+    {name: 'Date DESC', value: 'date', type: 2 },
   ];
   public selectSort: Sort = this.sortTypes[0];
 
@@ -32,7 +32,7 @@ export class AllExpensesComponent implements OnInit {
   }
 
   private getExpenses(): void {
-    this.expenseService.getExpenses().subscribe(res => {
+    this.expenseService.getSortedExpenses(this.selectSort).subscribe(res => {
       if (res) {
         this.expenseList = res;
         this.expenseList.forEach(exp => {
@@ -44,6 +44,6 @@ export class AllExpensesComponent implements OnInit {
   }
 
   public sortChanged(): void {
-    console.log(this.selectSort);
+    this.getExpenses();
   }
 }

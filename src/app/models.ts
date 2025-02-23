@@ -8,6 +8,6 @@ export interface Expense {
 
 export interface Sort {
     name: string,
-    value: number,
+    value: string,
     type: number,
 }
