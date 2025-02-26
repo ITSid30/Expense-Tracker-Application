@@ -31,7 +31,7 @@ export class AddExpensesComponent implements OnInit {
 
   ngOnInit(): void {
     this.expenseForm = this.fb.group({
-      id: new FormControl('', [Validators.required]),
+      // id is auto-generated hence not creating id field
       expenseDescription: new FormControl('', [Validators.required]),
       expenseAmount: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+(.[0-9]{0,2})?$')]),
       expenseType: new FormControl('', [Validators.required]),
@@ -43,7 +43,6 @@ export class AddExpensesComponent implements OnInit {
     console.log(this.expenseForm.value);
     let formData = this.expenseForm.value;
     const expenseObject = {
-      id: formData.id,
       description: formData.expenseDescription,
       amount: formData.expenseAmount,
       type: formData.expenseType,

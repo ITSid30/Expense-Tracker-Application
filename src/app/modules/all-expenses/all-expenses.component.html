@@ -15,7 +15,7 @@
     <table class="table table-striped table-bordered">
       <thead>
         <tr>
-          <th>ID</th>
+          <th>Sr. No.</th>
           <th>Description</th>
           <th>Amount</th>
           <th>Type</th>
@@ -23,8 +23,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let expense of expenseList">
-          <td>{{ expense.id }}</td>
+        <tr *ngFor="let expense of expenseList; let ind = index">
+          <td>{{ ind + 1 }}</td>
           <td>{{ expense.description }}</td>
           <td>${{ expense.amount }}</td>
           <td>{{ expense.type }}</td>
