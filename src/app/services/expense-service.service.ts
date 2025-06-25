@@ -28,11 +28,11 @@ export class ExpenseService {
     return this.httpClient.post<Expense>(this.userUrl, newExpense);
   }
 
-  public updateOil(existingExp: Expense): Observable<Expense> {
+  public updateExpense(existingExp: Expense): Observable<Expense> {
     return this.httpClient.put<Expense>(this.userUrl, existingExp);
   }
 
-  public deleteOil(expId: number): Observable<any> {
+  public deleteExpense(expId: number): Observable<any> {
     return this.httpClient.delete(this.userUrl+ `/${expId}`);
   }
 
@@ -45,5 +45,9 @@ export class ExpenseService {
       .set('sortBy', sort.value).set('sortDirection', sort.type);
 
     return this.httpClient.get<Expense[]>(this.userUrl + '/sorted', { params });
+  }
+
+  public getTopCategories(): Observable<any[]> {
+    return this.httpClient.get<any[]>(this.userUrl + '/top-categories');
   }
 }

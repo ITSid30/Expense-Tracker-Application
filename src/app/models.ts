@@ -11,3 +11,8 @@ export interface Sort {
     value: string,
     type: number,
 }
+
+export interface Category {
+    totalAmount: number,
+    category: string,
+}

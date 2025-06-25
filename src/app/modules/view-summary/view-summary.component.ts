@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { EChartsOption } from 'echarts';
+import moment from 'moment';
+import { ExpenseService } from '../../services/expense-service.service';
+import { Category, Expense } from '../../models';
 
 @Component({
   selector: 'app-view-summary',
@@ -6,41 +10,44 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./view-summary.component.css']
 })
 export class ViewSummaryComponent implements OnInit {
-  expensesList = [
-    { expenseId: 1, expenseDescription: 'Grocery Shopping', expenseAmount: 150, expenseType: 'Food', date: new Date() },
-    { expenseId: 2, expenseDescription: 'Electricity Bill', expenseAmount: 500, expenseType: 'Utilities', date: new Date() },
-    { expenseId: 3, expenseDescription: 'Movie Tickets', expenseAmount: 300, expenseType: 'Entertainment', date: new Date() },
-    { expenseId: 4, expenseDescription: 'Dinner', expenseAmount: 250, expenseType: 'Food', date: new Date() },
-    { expenseId: 5, expenseDescription: 'Phone Bill', expenseAmount: 400, expenseType: 'Utilities', date: new Date() },
-  ];
+  public expensesList: Expense[] = [];
+  public totalSpends = 0;
+  public maximumAmount = 0;
+  public minimumAmount = 0;
+  public noOfExpenses = 0;
 
-  totalSpends = 0;
   categorySpends: { [key: string]: number } = {};
-  topCategories: { type: string; amount: number }[] = [];
+  topCategories: Category[] = [];
   chartData: any[] = [];
 
+  lineChartOptions: EChartsOption = {};
+  allExpenses: any[] = [];
+  selectedMonth: string = '';
+  lastFourMonths: any[] = [];
+
+  constructor(
+    private expenseService: ExpenseService,
+  ) {}
+
   ngOnInit() {
+    this.fetchExpensesFromBackend();
     this.calculateSummary();
+    this.lastFourMonths = this.getLastNMonths(4);
+    this.getTopCategories();
   }
 
   calculateSummary() {
     // Calculate total spends
-    this.totalSpends = this.expensesList.reduce((sum, expense) => sum + expense.expenseAmount, 0);
+    this.totalSpends = this.expensesList.reduce((sum, expense) => sum + expense.amount, 0);
 
     // Calculate spends by category
     this.expensesList.forEach((expense) => {
-      if (this.categorySpends[expense.expenseType]) {
-        this.categorySpends[expense.expenseType] += expense.expenseAmount;
+      if (this.categorySpends[expense.type]) {
+        this.categorySpends[expense.type] += expense.amount;
       } else {
-        this.categorySpends[expense.expenseType] = expense.expenseAmount;
+        this.categorySpends[expense.type] = expense.amount;
       }
     });
-
-    // Prepare top categories
-    this.topCategories = Object.entries(this.categorySpends)
-      .map(([type, amount]) => ({ type, amount }))
-      .sort((a, b) => b.amount - a.amount)
-      .slice(0, 3);
 
     // Prepare chart data
     this.chartData = Object.entries(this.categorySpends).map(([type, amount]) => ({
@@ -48,4 +55,86 @@ export class ViewSummaryComponent implements OnInit {
       value: amount,
     }));
   }
+
+  getLastNMonths(n: number): any {
+    this.lastFourMonths = Array.from({ length: 4 }, (_, i) => {
+      const m = moment().subtract(3 - i, 'months');
+      return {
+        label: m.format('MMMM YYYY'), // Display: "June 2025"
+        value: m.format('YYYY-MM')    // Internal: "2025-06"
+      };
+    });
+
+    this.selectedMonth = this.lastFourMonths[3].value;
+    return this.lastFourMonths;
+  }
+
+  fetchExpensesFromBackend() {
+    this.expenseService.getExpenses().subscribe(res => {
+      this.expensesList = res;
+      this.expensesList.forEach(exp => {
+          const date = Number(exp.date) * 1000;
+          exp.date = new Date(date);
+          this.totalSpends += exp.amount;
+          this.maximumAmount = Math.max(this.maximumAmount, exp.amount);
+          this.minimumAmount = Math.min(this.minimumAmount, exp.amount);
+        });
+      this.noOfExpenses = this.expensesList.length;
+      this.updateChart();
+    });
+
+  }
+
+  updateChart() {
+    const selected = moment(this.selectedMonth, 'YYYY-MM');
+    const daysInMonth = selected.daysInMonth();
+    const xAxisDays = Array.from({ length: daysInMonth }, (_, i) =>
+      selected.clone().date(i + 1).format('DD')
+    );
+
+    const dailyTotals = new Array(daysInMonth).fill(0);
+
+    this.expensesList.forEach(exp => {
+      const date = moment(exp.date);
+      if (date.format('YYYY-MM') === selected.format('YYYY-MM')) {
+        const dayIndex = date.date() - 1;
+        dailyTotals[dayIndex] += exp.amount;
+      }
+    });
+
+    this.lineChartOptions = {
+      title: { text: `Expenses for ${selected.format('MMMM YYYY')}` },
+      tooltip: { trigger: 'axis' },
+      xAxis: {
+        type: 'category',
+        data: xAxisDays,
+        name: 'Day'
+      },
+      yAxis: {
+        type: 'value',
+        name: 'Amount (₹)'
+      },
+      series: [{
+        data: dailyTotals,
+        type: 'line',
+        smooth: false,
+        areaStyle: {},
+        lineStyle: {
+          color: '#FF5733', // 🔴 Custom line color
+          width: 3
+        },
+        itemStyle: {
+          color: '#FF5733' // 🔴 Dot color
+        }
+      }]
+    };
+  }
+
+  private getTopCategories(): void {
+    this.expenseService.getTopCategories().subscribe(res => {
+      this.topCategories = res;
+      console.log('Top categories: ', this.topCategories);
+    });
+  }
+  
 }

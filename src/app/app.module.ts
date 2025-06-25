@@ -22,6 +22,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { ToastrModule } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
+import { MainPageComponent } from './modules/main-page/main-page.component';
+import { NgxEchartsModule } from 'ngx-echarts';
+import * as echarts from 'echarts';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -41,7 +44,8 @@ export const MY_DATE_FORMATS = {
     HomePageComponent,
     AddExpensesComponent,
     ViewSummaryComponent,
-    AllExpensesComponent
+    AllExpensesComponent,
+    MainPageComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -64,6 +68,7 @@ export const MY_DATE_FORMATS = {
       positionClass: 'toast-top-center', // Global position
       timeOut: 3000, // Default timeout
     }),
+    NgxEchartsModule.forRoot({ echarts }),
   ],
   providers: [MatDatepickerModule, MatNativeDateModule,
     DatePipe,

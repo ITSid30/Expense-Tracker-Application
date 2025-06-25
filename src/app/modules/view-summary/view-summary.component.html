@@ -1,30 +1,63 @@
-<div class="m-5">
-    <h2>Expense Summary</h2>
+<div class="p-5 bg-white curves">
+    <h2 class="strong mb-5">Expense Summary</h2>
   
     <div class="row">
       <div class="col-md-3">
         <!-- Total Spends -->
         <div class="card p-4 mb-4 shadow">
-          <h3 class="text-primary">Total Spends</h3>
+          <h3 class="text-primary">Total Amount of Expense</h3>
           <h4>{{ totalSpends | currency: 'INR' }}</h4>
         </div>
       </div>
-    
+      <div class="col-md-3">
+        <div class="card p-4 mb-4 shadow">
+        <h3 class="text-primary">Number of Expenses</h3>
+          <h4>{{ noOfExpenses }}</h4>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card p-4 mb-4 shadow">
+          <h3 class="text-primary">Maximum Expense</h3>
+          <h4>{{ maximumAmount | currency: 'INR' }}</h4>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card p-4 mb-4 shadow">
+          <h3 class="text-primary">Minimum Expense</h3>
+          <h4>{{ minimumAmount | currency: 'INR' }}</h4>
+        </div>
+      </div>
+      
+    </div>
+
+    <div class="row mb-3">
       <div class="col-md-9">
         <!-- Top Spent Categories -->
         <div class="card p-4 mb-4 shadow">
           <h3 class="text-success">Top Spent Categories</h3>
           <ul class="list-group">
             <li class="list-group-item" *ngFor="let category of topCategories">
-              <strong>{{ category.type }}:</strong> {{ category.amount | currency: 'INR' }}
+              <strong>{{ category.category }}:</strong> {{ category.totalAmount | currency: 'INR' }}
             </li>
           </ul>
         </div>
       </div>
     </div>
+
+    <!-- Line chart for expense Amount for full month -->
+    <h3 class="strong mb-3">Expense History</h3>
+    <div class="row mb-3 justify-content-end">
+      <div class="col-md-4 d-flex">
+        <b class="strong w-100">Select Month: </b>
+        <select class="form-select" [(ngModel)]="selectedMonth" (change)="updateChart()">
+          <option *ngFor="let month of lastFourMonths" [value]="month.value">{{ month.label }}</option>
+        </select>
+      </div>
+    </div>
+    <div echarts [options]="lineChartOptions" class="chart-box"></div>
   
     <!-- Pie Chart -->
-    <div class="card p-4 mb-4 shadow">
+    <!-- <div class="card p-4 mb-4 shadow">
       <h3 class="text-warning">Spends by Category</h3>
       <ngx-charts-pie-chart
         [view]="[500, 400]"
@@ -35,5 +68,5 @@
         [doughnut]="true"
         [explodeSlices]="false">
       </ngx-charts-pie-chart>
-    </div>
+    </div> -->
   </div>
