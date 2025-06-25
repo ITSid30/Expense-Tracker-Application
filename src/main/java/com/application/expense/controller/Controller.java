@@ -1,6 +1,9 @@
 package com.application.expense.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.application.expense.dto.TopCategoryDTO;
 import com.application.expense.entities.Expense;
 import com.application.expense.services.ExpenseService;
 
@@ -120,4 +124,26 @@ public class Controller {
 					.body("Error occured while fetching sorted Expenses: " + e.getMessage());
 		}
 	}
+	
+	@GetMapping("/expenses/top-categories")
+    public ResponseEntity<?> getTopCategories() {
+		try {
+//			List<TopCategoryDTO> categories = this.expenseService.getTopCategories();
+//			return ResponseEntity.ok(categories);
+			List<Object[]> rawResult = expenseService.getTopCategories();
+
+	        // Convert Object[] to readable Map<String, Object>
+	        List<Map<String, Object>> response = rawResult.stream().map(row -> {
+	            Map<String, Object> map = new HashMap<>();
+	            map.put("category", row[0]);
+	            map.put("totalAmount", row[1]);
+	            return map;
+	        }).collect(Collectors.toList());
+			return ResponseEntity.ok(response);
+		}
+		catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Error occured while fetching sorted Expenses: " + e.getMessage());
+		}
+    }
 }

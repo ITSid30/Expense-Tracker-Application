@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
 
 import com.application.expense.dao.ExpenseDao;
+import com.application.expense.dto.TopCategoryDTO;
 import com.application.expense.entities.Expense;
 
 @Service
@@ -68,6 +69,13 @@ public class ExpenseServiceImpl implements ExpenseService {
 	    Sort.Direction direction = sortDirection == 1 ? Sort.Direction.ASC : Sort.Direction.DESC;
 	    Sort sort = Sort.by(direction, sortBy);
 	    return this.expenseDao.findAll(sort);
+	}
+
+	@Override
+	public List<Object[]> getTopCategories() {
+		// TODO Auto-generated method stub
+		
+		return this.expenseDao.getTopCategories();
 	}
 	
 	
