@@ -1,88 +1,35 @@
-<div class="container">
-  <div class="sidebar"
-      [class.collapsed]="isCollapsed">
-      <h2 class="app-name" *ngIf="!isCollapsed">Expense App</h2>
-    <button type="button"
-        class="toggle-button w-100"
-        (click)="toggleSidebar()">
-      ☰
-    </button>
-    <nav>
-      <ul>
-        <li>
-          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-            <i class="bi bi-house-door"></i>
-            <span *ngIf="!isCollapsed">Home</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink="/view-summary" routerLinkActive="active">
-            <i class="bi bi-bar-chart"></i>
-            <span *ngIf="!isCollapsed">Summary</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-  <div class="content bg-primary-subtle">
-    <router-outlet></router-outlet>
-  </div>
+<div class="sidebar"
+    [class.collapsed]="isCollapsed">
+    <h2 class="app-name" *ngIf="!isCollapsed">Expense App</h2>
+  <button type="button"
+      class="toggle-button w-100"
+      (click)="toggleSidebar()">
+    ☰
+  </button>
+  <nav>
+    <ul>
+      <li>
+        <a routerLink="/expenses/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <i class="bi bi-house-door"></i>
+          <span *ngIf="!isCollapsed">Home</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/expenses/view-summary" routerLinkActive="active">
+          <i class="bi bi-bar-chart"></i>
+          <span *ngIf="!isCollapsed">Summary</span>
+        </a>
+      </li>
+      <!-- <li>
+        <button type="button" (click)="onLogOut()">-> LogOut</button>
+      </li> -->
+    </ul>
+    
+    <div class="logout-container">
+      <button type="button" class="logout-btn" (click)="onLogOut()">
+        <i class="bi bi-box-arrow-right"></i>
+        <span *ngIf="!isCollapsed">Logout</span>
+      </button>
+    </div>
+  </nav>
 </div>
-
-
-
-<!-- <div class="bg-primary-subtle p-5">
-    <div class="text-center">
-        <h1>Expense Manager</h1>
-    </div>
-    <div class="row mt-5">
-        <div class="col-12 col-md-6 text-center my-3 cursor-pointer">
-            <div class="d-flex flex-column align-items-center card curves shadow-hover"
-                (click)="addExpenses()">
-                <i class="bi bi-plus-circle-fill text-primary icon-large"></i>
-                <h3 class="mt-2">Add Expense</h3>
-            </div>
-        </div>
-
-        <div class="col-12 col-md-6 text-center my-3 cursor-pointer">
-            <div class="d-flex flex-column align-items-center card curves shadow-hover"
-                routerLink="/view-summary">
-                <i class="bi bi-bar-chart-fill text-success icon-large"></i>
-                <h3 class="mt-2">View Summary</h3>
-            </div>
-        </div>
-    </div>
-
-    <div class="expense-list container">
-        <h3 class="mb-4">Recent Expenses</h3>
-      
-        <div
-          *ngFor="let expense of recentExpenseList.slice(0, displayLimit)"
-          class="row expense-card mb-3">
-          <div class="col-md-3 text-center d-flex align-items-center justify-content-center">
-            <div>
-              <h5 class="text-primary">{{ expense.description }}</h5>
-            </div>
-          </div>
-      
-          <div class="col-md-3 d-flex align-items-center justify-content-center">
-            <p class="mb-0"><strong>Amount:</strong> {{ expense.amount | currency: 'INR' }}</p>
-          </div>
-      
-          <div class="col-md-3 d-flex align-items-center justify-content-center flex-column">
-            <p class="mb-0"><strong>Type:</strong> {{ expense.type }}</p>
-          </div>
-
-          <div class="col-md-3 d-flex align-items-center justify-content-center flex-column">
-            <p class="mb-0"><strong>Date:</strong> {{ expense.date | date: 'dd/MM/yyyy' }}</p>
-          </div>
-        </div>
-
-        <button
-          *ngIf="displayLimit < expensesList.length"
-          class="btn btn-primary mt-3 mx-auto"
-          routerLink="/all-expenses">
-          View All Expenses
-        </button>
-      </div>
-</div> -->

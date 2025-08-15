@@ -17,7 +17,7 @@ import { AllExpensesComponent } from './modules/all-expenses/all-expenses.compon
 import { RouterModule } from '@angular/router';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { ToastrModule } from 'ngx-toastr';
@@ -25,6 +25,9 @@ import { DatePipe } from '@angular/common';
 import { MainPageComponent } from './modules/main-page/main-page.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import * as echarts from 'echarts';
+import { LoginComponent } from './auth/login/login.component';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { RegisterComponent } from './auth/register/register.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -45,7 +48,9 @@ export const MY_DATE_FORMATS = {
     AddExpensesComponent,
     ViewSummaryComponent,
     AllExpensesComponent,
-    MainPageComponent
+    MainPageComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -70,10 +75,14 @@ export const MY_DATE_FORMATS = {
     }),
     NgxEchartsModule.forRoot({ echarts }),
   ],
-  providers: [MatDatepickerModule, MatNativeDateModule,
+  providers: [
+    MatDatepickerModule, 
+    MatNativeDateModule,
     DatePipe,
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     { provide: MAT_DATE_LOCALE, useValue: 'en-IN' }, // Locale set to en-GB for DD/MM/YYYY format
+    // to make http calls with Authorization Token for backend
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true },
   ],
   bootstrap: [AppComponent]
 })

@@ -124,3 +124,22 @@ nav ul li a.active {
   gap: 0;
   padding: 12px;
 }
+
+.logout-btn {
+  background-color: #dc3545; /* Bootstrap danger color */
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logout-btn:hover {
+  background-color: #c82333;
+}

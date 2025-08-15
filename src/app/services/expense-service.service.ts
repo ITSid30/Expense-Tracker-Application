@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Expense, Sort } from '../models';
@@ -13,6 +13,8 @@ export class ExpenseService {
   constructor(
     private httpClient: HttpClient
   ) { 
+    // this is the userUrl from where backend api's are coming 
+    // and will be authenticated using HttpHeaders provided using AuthInterceptorService
     this.userUrl = 'http://localhost:8080/expenses';
   }
 
@@ -49,5 +51,9 @@ export class ExpenseService {
 
   public getTopCategories(): Observable<any[]> {
     return this.httpClient.get<any[]>(this.userUrl + '/top-categories');
+  }
+
+  public getExpenseStats(): Observable<any> {
+    return this.httpClient.get<any>(this.userUrl + '/getStats');
   }
 }

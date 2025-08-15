@@ -40,7 +40,6 @@ export class AddExpensesComponent implements OnInit {
   }
 
   onSave(): void {
-    console.log(this.expenseForm.value);
     let formData = this.expenseForm.value;
     const expenseObject = {
       description: formData.expenseDescription,

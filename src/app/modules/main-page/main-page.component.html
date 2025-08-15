@@ -1,10 +1,10 @@
-<div class="bg-white p-2 curves h-100">
+<div class="bg-white p-2 curves">
     <div class="row w-100 mb-3">
         <div class="col-md-12">
             <div class="card shadow">
                 <div class="card-body text-center">
                     <h5 class="card-text">Welcome back to your dashboard.</h5>
-                    <h2 class="card-title">Hello, userName!</h2>
+                    <h2 class="card-title">Hello, {{ userDetails.fullName }}</h2>
                 </div>
             </div>
         </div>
@@ -14,7 +14,7 @@
             <div class="card shadow">
                 <div class="card-body text-center">
                     <h5 class="card-title">Total Expenses</h5>
-                    <h2>50</h2>
+                    <h2>{{ expenseStats.totalAmount }}</h2>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
             <div class="card shadow">
                 <div class="card-body text-center">
                     <h5 class="card-title">Total Expenses</h5>
-                    <h2>₹ 1500</h2>
+                    <h2>{{ expenseStats.totalExpenses }}</h2>
                 </div>
             </div>
         </div>
@@ -38,17 +38,16 @@
 
     <div class="row">
         <!-- Left Side: Action Buttons -->
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-4 ">
             <div class="d-grid gap-3">
                 <div class="card text-center p-3 shadow-sm cursor-pointer" (click)="addExpenses()">
-                <i class="bi bi-plus-circle-fill text-primary fs-2"></i>
-                <h5 class="mt-2 mb-0">Add Expense</h5>
+                    <i class="bi bi-plus-circle-fill text-primary fs-2"></i>
+                    <h5 class="mt-2 mb-0">Add Expense</h5>
                 </div>
                 <div class="card text-center p-3 shadow-sm cursor-pointer"
-                routerLink="/all-expenses"
-                    (click)="viewAllExpenses()">
-                <i class="bi bi-list-check text-success fs-2"></i>
-                <h5 class="mt-2 mb-0">View All Expenses</h5>
+                    routerLink="/expenses/all-expenses">
+                    <i class="bi bi-list-check text-success fs-2"></i>
+                    <h5 class="mt-2 mb-0">View All Expenses</h5>
                 </div>
             </div>
         </div>

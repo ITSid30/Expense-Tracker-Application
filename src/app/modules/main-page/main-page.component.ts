@@ -24,9 +24,13 @@ export class MainPageComponent implements OnInit {
   //   { id: 4, description: 'Online Shopping', amount: 300, type: 'Entertainment', date: new Date() },
   // ];
   public displayLimit: number = 5;
+  public userDetails: any;
+  public expenseStats: any;
 
   ngOnInit(): void {
       this.getRecentExpenses();
+      this.getUserDetails();
+      this.getExpenseStats();
   }
 
   public addExpenses(): void {
@@ -46,10 +50,6 @@ export class MainPageComponent implements OnInit {
         });
   }
 
-  public viewAllExpenses(): void {
-
-  }
-
   public getRecentExpenses(): void {
     this.expenseService.getRecentExpenses().subscribe(res => {
       if (res) {
@@ -59,6 +59,21 @@ export class MainPageComponent implements OnInit {
           exp.date = new Date(date);
         });
       }
+    }, (error)=> {
+      console.error(error);
     });
+  }
+
+  private getUserDetails(): void {
+    this.userDetails = JSON.parse(localStorage.getItem('userDetails') || '');
+    console.log(this.userDetails);
+  }
+
+  private getExpenseStats(): void {
+    this.expenseService.getExpenseStats().subscribe(res => {
+      this.expenseStats = res;
+    }, (error) => {
+      console.error(error);
+    })
   }
 }

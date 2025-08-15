@@ -133,7 +133,6 @@ export class ViewSummaryComponent implements OnInit {
   private getTopCategories(): void {
     this.expenseService.getTopCategories().subscribe(res => {
       this.topCategories = res;
-      console.log('Top categories: ', this.topCategories);
     });
   }
   

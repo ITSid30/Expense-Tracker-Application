@@ -3,7 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddExpensesComponent } from '../modules/add-expenses/add-expenses.component';
 import { Expense } from '../models';
 import { ExpenseService } from '../services/expense-service.service';
-import moment from 'moment';
+import { AuthServiceService } from '../services/auth-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
@@ -11,13 +12,6 @@ import moment from 'moment';
   styleUrl: './home-page.component.css'
 })
 export class HomePageComponent implements OnInit {
-
-  // public expensesList: Expense[] = [
-  //   { id: 1, description: 'Grocery Shopping', amount: 150, type: 'Food', date: new Date() },
-  //   { id: 2, description: 'Electricity Bill', amount: 200, type: 'Utilities', date: new Date() },
-  //   { id: 3, description: 'Gym Membership', amount: 100, type: 'Health', date: new Date() },
-  //   { id: 4, description: 'Online Shopping', amount: 300, type: 'Entertainment', date: new Date() },
-  // ];
   public expensesList: Expense[] = [];
   public recentExpenseList: Expense[] = [];
   public displayLimit: number = 3;
@@ -25,11 +19,12 @@ export class HomePageComponent implements OnInit {
 
   constructor(
     public matDialog: MatDialog,
-    private expenseService: ExpenseService
+    private expenseService: ExpenseService,
+    private authService: AuthServiceService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
-      this.getRecentExpenses();
   }
 
   public toggleSidebar(): void {
@@ -56,16 +51,9 @@ export class HomePageComponent implements OnInit {
 
   }
 
-  public getRecentExpenses(): void {
-    this.expenseService.getRecentExpenses().subscribe(res => {
-      if (res) {
-        this.recentExpenseList = res;
-        this.recentExpenseList.forEach(exp => {
-          const date = Number(exp.date) * 1000;
-          exp.date = new Date(date);
-        });
-      }
-    });
+  public onLogOut(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
 }
