@@ -1,26 +1,34 @@
 package com.application.expense.services;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.application.expense.dao.ExpenseDao;
+import com.application.expense.dao.UserRepository;
+import com.application.expense.dto.ExpenseStatsDTO;
 import com.application.expense.dto.TopCategoryDTO;
 import com.application.expense.entities.Expense;
+import com.application.expense.entities.User;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
 	
 	@Autowired
 	public ExpenseDao expenseDao;
+	@Autowired private UserRepository userRepository;
 
 	@Override
 	public List<Expense> getAllExpenses() {
 		// TODO Auto-generated method stub
 		return this.expenseDao.findAll();
 	}
+	
 
 	@Override
 	public Expense getExpense(long id) {
@@ -31,6 +39,15 @@ public class ExpenseServiceImpl implements ExpenseService {
 	@Override
 	public Expense addExpense(Expense newExpense) {
 		// TODO Auto-generated method stub
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+	    
+	    // Fetch the user entity from DB
+	    User user = userRepository.findByUserName(username)
+	        .orElseThrow(() -> new RuntimeException("User not found"));
+	    
+	    // Set the user in the expense
+	    newExpense.setUser(user);
+	    
 		return this.expenseDao.save(newExpense);
 	}
 
@@ -59,9 +76,9 @@ public class ExpenseServiceImpl implements ExpenseService {
 	}
 
 	@Override
-	public List<Expense> getRecentExpenses() {
+	public List<Expense> getRecentExpenses(Long userId) {
 		// TODO Auto-generated method stub
-		return this.expenseDao.findByOrderByDateDesc();
+		return this.expenseDao.findByUserIdOrderByDateDesc(userId);
 	}
 
 	@Override
@@ -77,8 +94,17 @@ public class ExpenseServiceImpl implements ExpenseService {
 		
 		return this.expenseDao.getTopCategories();
 	}
-	
-	
-	
+
+	@Override
+	public ExpenseStatsDTO getExpenseStats() {
+		// TODO Auto-generated method stub
+		Object[] statsObj = (Object[]) this.expenseDao.getTotalExpensesAndAmount();
+		
+		long totalExpenses = ((Number) statsObj[0]).longValue();
+		double totalAmount = ((Number) statsObj[1]).doubleValue();
+		
+		return new ExpenseStatsDTO(totalExpenses, totalAmount);
+	}
+
 	
 }

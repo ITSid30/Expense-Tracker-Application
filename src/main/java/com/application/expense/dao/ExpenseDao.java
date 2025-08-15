@@ -12,10 +12,13 @@ import com.application.expense.entities.Expense;
 
 public interface ExpenseDao extends JpaRepository<Expense, Long> {
 
-	List<Expense> findByOrderByDateDesc();
+	List<Expense> findByUserIdOrderByDateDesc(Long userId);
 	
 	List<Expense> findAll(Sort sort);
 	
 	@Query("SELECT e.type, SUM(e.amount) FROM Expense e GROUP BY e.type ORDER BY SUM(e.amount) DESC")
 	List<Object[]> getTopCategories();
+	
+	@Query("SELECT COUNT(e), SUM(e.amount) from Expense e")
+	Object getTotalExpensesAndAmount();
 }

@@ -19,11 +19,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.application.expense.dto.ExpenseStatsDTO;
 import com.application.expense.dto.TopCategoryDTO;
 import com.application.expense.entities.Expense;
 import com.application.expense.services.ExpenseService;
+import com.application.expense.utility.JwtUtil;
 
-@CrossOrigin("*")
+import jakarta.servlet.http.HttpServletRequest;
+
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
 public class Controller {
 	
@@ -34,6 +38,7 @@ public class Controller {
 	
 	@Autowired
 	private ExpenseService expenseService;
+	@Autowired private JwtUtil jwtUtil;
 	
 	@GetMapping("expenses")
 	public ResponseEntity<?> getExpenses() {
@@ -102,9 +107,10 @@ public class Controller {
 	}
 	
 	@GetMapping("/expenses/recent")
-	public ResponseEntity<?> getRecentExpenses() {
+	public ResponseEntity<?> getRecentExpenses(HttpServletRequest request) {
 		try {
-			List<Expense> expenses = this.expenseService.getRecentExpenses();
+			Long userId = jwtUtil.extractUserIdFromRequest(request);
+			List<Expense> expenses = this.expenseService.getRecentExpenses(userId);
 			return ResponseEntity.ok(expenses);
 		}
 		catch(Exception e) {
@@ -146,4 +152,16 @@ public class Controller {
 					.body("Error occured while fetching sorted Expenses: " + e.getMessage());
 		}
     }
+	
+	@GetMapping("/expenses/getStats")
+	public ResponseEntity<?> getStats() {
+		try {
+			ExpenseStatsDTO stats = expenseService.getExpenseStats();
+			return ResponseEntity.ok(stats); 
+		} 
+		catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Error occured while fetching expense stats : " + e.getMessage());
+		}
+	}
 }

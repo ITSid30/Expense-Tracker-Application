@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Expense {
@@ -15,6 +17,10 @@ public class Expense {
 	private double amount;
 	private String type;
 	private long date;
+	
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 	
 	public long getId() {
 		return id;
@@ -62,6 +68,12 @@ public class Expense {
 	public String toString() {
 		return "Expense [id=" + id + ", description=" + description + ", amount=" + amount + ", type=" + type
 				+ ", date=" + date + "]";
+	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 	
