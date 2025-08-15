@@ -13,7 +13,7 @@ export class ViewSummaryComponent implements OnInit {
   public expensesList: Expense[] = [];
   public totalSpends = 0;
   public maximumAmount = 0;
-  public minimumAmount = 0;
+  public minimumAmount = 999999999;
   public noOfExpenses = 0;
 
   categorySpends: { [key: string]: number } = {};

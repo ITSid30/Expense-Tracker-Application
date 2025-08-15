@@ -17,12 +17,6 @@ export class MainPageComponent implements OnInit {
   ) {}
 
   public recentExpenseList: Expense[] = [];
-  // public expensesList: Expense[] = [
-  //   { id: 1, description: 'Grocery Shopping', amount: 150, type: 'Food', date: new Date() },
-  //   { id: 2, description: 'Electricity Bill', amount: 200, type: 'Utilities', date: new Date() },
-  //   { id: 3, description: 'Gym Membership', amount: 100, type: 'Health', date: new Date() },
-  //   { id: 4, description: 'Online Shopping', amount: 300, type: 'Entertainment', date: new Date() },
-  // ];
   public displayLimit: number = 5;
   public userDetails: any;
   public expenseStats: any;
@@ -45,7 +39,8 @@ export class MainPageComponent implements OnInit {
     
         dialog.afterClosed().subscribe(res => {
           if(res.action == 'Save') {
-            // this.expensesList.push(res.data);
+            this.getRecentExpenses();
+            this.getExpenseStats();
           }
         });
   }

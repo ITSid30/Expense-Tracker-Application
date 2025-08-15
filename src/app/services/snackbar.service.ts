@@ -18,17 +18,4 @@ export class SnackbarService {
       panelClass: type === 'success' ? ['success-snackbar'] : ['error-snackbar']
     });
   }
-
-  //// Not working
-  // public openSnackbar(message: string, type: string): void {
-  //   if (type === 'success') {
-  //     this.toastr.success(message, 'Success', {
-  //       toastClass: 'ngx-toastr success-toast',
-  //     });
-  //   } else if (type === 'error') {
-  //     this.toastr.error(message, 'Error', {
-  //       toastClass: 'ngx-toastr error-toast',
-  //     });
-  //   }
-  // }
 }

@@ -61,15 +61,4 @@ export class AddExpensesComponent implements OnInit {
   onCancel(): void {
     this.dialogRef.close();
   }
-
-  // onDateChange(event: any) {
-  //   const inputDate = event.target.value;
-  //   if (inputDate) {
-  //     const formattedDate = this.datePipe.transform(inputDate, 'dd/MM/yyyy');
-  //     if (formattedDate) {
-  //       this.expenseDateFormatted = formattedDate;
-  //     }
-  //   }
-  // }
-
 }
